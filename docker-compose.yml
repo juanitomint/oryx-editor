@@ -1,0 +1,32 @@
+version: "3"
+networks:
+  dna2:
+
+
+services:
+
+  tomcat:
+    image: tomcat:8.0
+    depends_on:
+      - postgres
+    volumes:
+      - ./dist:/usr/local/tomcat/webapps/
+      - ./backups:/backups
+    # working_dir: /usr/src/app
+    ### comment this for new versions / setups
+    command: ["catalina.sh", "run"]
+    ports:
+      - "8080:8080"
+    # stdin_open: true
+    # tty: true
+    networks:
+      - dna2
+   
+  postgres:
+    image: postgres:latest
+        
+    volumes:
+      - ./backups:/backups
+      - ./data/configdb:/data/db
+    networks:
+      - dna2
